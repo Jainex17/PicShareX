@@ -3,35 +3,35 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: #ffffff;
-  --background-start-rgb: #333;
-  --background-end-rgb: #333;
+  --background-color: white;
+  --text-color: black;
+  --background: #26262a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: #ffffff;
-    --background-start-rgb: #333;
-    --background-end-rgb: #333;
-  }
-  
-  body {
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgb(var(--background-end-rgb))
-      )
-      rgb(var(--background-start-rgb));
-  }
+[data-theme='dark'] {
+  --background-color: #333;
+  --text-color: white;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.dark {
+  background-color: #2a2a2f;
+  color: white;
+}
+
+.dark svg {
+  stroke: white;
+}
+
+.fileupload  button:first-child:hover {
+  background-color: #E6A23c;
+  color: white;
+}
+.fileupload button:last-child:hover {
+  background-color: #409eff;
+  color: white;
 }
