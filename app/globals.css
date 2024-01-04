@@ -26,12 +26,3 @@ body {
 .dark svg {
   stroke: white;
 }
-
-.fileupload  button:first-child:hover {
-  background-color: #E6A23c;
-  color: white;
-}
-.fileupload button:last-child:hover {
-  background-color: #409eff;
-  color: white;
-}
