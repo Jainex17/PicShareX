@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
+import { Popup } from './Popup/Popup';
 
 function FileUploadComponent() {
     const [images, setImages] = useState<File[]>([]);
     const [isUpload, setIsUpload] = useState<boolean>(false);
+    const [PopupVal, setPopupVal] = useState<boolean>(false);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if(acceptedFiles[0].type !== "image/jpeg" && acceptedFiles[0].type !== "image/png" && acceptedFiles[0].type !== "image/jpg") {
@@ -32,6 +34,8 @@ function FileUploadComponent() {
     }
     
     return (
+        <>
+        { PopupVal && <Popup PopupVal={PopupVal} setPopupVal={setPopupVal} />}
         <section className="fileupload container mx-auto pt-8 px-8 bg-white dark:bg-[#2a2a2f]">
             <div {...getRootProps({ className: `border-dashed border-4 ${images.length > 0 ? "border-blue-500" :'border-gray-500'} flex flex-col justify-center items-center cursor-pointer` })}>
                 {
@@ -57,8 +61,8 @@ function FileUploadComponent() {
                 <>
                     <div className='flex items-center mt-3 justify-end mx-2'>
                         <div className='flex justify-end gap-4 mt-3'>
-                            <button className='dark:hover:bg-[#E6A23c] dark:hover:text-white dark:bg-[#292218] border border-gray-900 dark:border-[#b47517] dark:text-[#e6a23c] px-8 py-2 rounded-md transition ease-in-out' onClick={()=>setImages([])}>Cancel</button>
-                            <button className="dark:hover:bg-[#409eff] dark:hover:text-white dark:bg-[#18222c] dark:text-[#409eff] border dark:border-[#409eff] border-gray-900 px-8 py-2 rounded-md  transition ease-in-out" onClick={uploadbtn} disabled={isUpload}>{isUpload ? "Uploading..." : "Upload"}</button>
+                            <button className='dark:hover:bg-[#E6A23c] dark:hover:text-white dark:bg-[#292218] border border-gray-900 dark:border-[#b47517] dark:text-[#e6a23c] px-8 py-2 rounded-md transition ease-in-out' onClick={()=> setImages([])}>Clear All</button>
+                            <button className="dark:hover:bg-[#409eff] dark:hover:text-white dark:bg-[#18222c] dark:text-[#409eff] border dark:border-[#409eff] border-gray-900 px-8 py-2 rounded-md  transition ease-in-out" onClick={()=> setPopupVal(true)} disabled={isUpload}>{isUpload ? "Uploading..." : "Upload"}</button>
                         </div>
                     </div>
 
@@ -91,6 +95,7 @@ function FileUploadComponent() {
             }
 
         </section>
+        </>
     );
 }
 
