@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
-import { Popup } from './Popup/Popup';
+import { Popup } from './Popup/Index';
 
 function FileUploadComponent() {
     const [images, setImages] = useState<File[]>([]);
