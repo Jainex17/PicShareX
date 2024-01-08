@@ -4,7 +4,7 @@ import { Navbar } from '../components/Navbar'
 import FileUploadComponent from "../components/FileUploadComponent";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SideBar } from "@/components/SideBar/SideBar";
+import { SideBar } from "../components/SideBar/SideBar";
 
 export default function Home() {
 
