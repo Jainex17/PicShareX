@@ -1,12 +1,12 @@
 "use client";
 
+import React from "react";
 import { storage } from "@/firebase";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { useState } from "react";
 
 export default function page() {
-  const [secretcode, setSecretCode] = useState("");
-  const [images, setImages] = useState<[string, string][]>([]);
+  const [secretcode, setSecretCode] = React.useState("");
+  const [images, setImages] = React.useState<[string, string][]>([]);
 
   function getimages() {
     console.log(secretcode);
