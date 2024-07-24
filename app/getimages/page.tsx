@@ -9,8 +9,7 @@ export default function Page() {
   const [images, setImages] = React.useState<[string, string][]>([]);
 
   function getimages() {
-    console.log(secretcode);
-    const storageRef = ref(storage, "images");
+    const storageRef = ref(storage, secretcode);
 
     listAll(storageRef).then((res) => {
       res.items.forEach((itemRef) => {
