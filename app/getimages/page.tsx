@@ -55,22 +55,24 @@ export default function Page() {
       <div className="my-10">
         <div className="flex gap-6 justify-center flex-wrap">
           {images.map((image, index) => (
-            <div
-              key={index}
-              className="flex flex-col border border-[#b47517] rounded-md select-none"
-            >
-              <img
-                src={image[1]}
-                alt="preview image"
-                draggable={false}
-                className="hover:brightness-75 transition  flex justify-center items-center object-cover w-64 h-64"
-              />
-              <div className="flex justify-between bg-white dark:bg-[#333]">
-                <p className="text-gray-600 dark:text-white text-xs py-2 px-3">
-                  {image[0] && image[0].length > 30
-                    ? image[0].slice(0, 30) + "..."
-                    : image[0]}
-                </p>
+            <>
+              <div
+                key={index}
+                className="flex flex-col border border-[#b47517] rounded-md select-none"
+              >
+                <img
+                  src={image[1]}
+                  alt="preview image"
+                  draggable={false}
+                  className="hover:brightness-75 transition  flex justify-center items-center object-cover w-64 h-64"
+                />
+                <div className="flex justify-between bg-white dark:bg-[#333]">
+                  <p className="text-gray-600 dark:text-white text-xs py-2 px-3">
+                    {image[0] && image[0].length > 30
+                      ? image[0].slice(0, 30) + "..."
+                      : image[0]}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => downloadImage(image[1])}
@@ -78,7 +80,7 @@ export default function Page() {
               >
                 Download
               </button>
-            </div>
+            </>
           ))}
         </div>
       </div>
