@@ -4,7 +4,7 @@ import React from "react";
 import { storage } from "@/firebase";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 
-export default function page() {
+export default function Page() {
   const [secretcode, setSecretCode] = React.useState("");
   const [images, setImages] = React.useState<[string, string][]>([]);
 
