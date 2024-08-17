@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export const Navbar = () => {
@@ -16,9 +17,9 @@ export const Navbar = () => {
     <nav className="bg-white dark:bg-[#2a2a2f] border-b-2 border-gray-300 dark:border-gray-700">
         <div className="flex justify-between py-3 px-5">
         <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                ShareX
-            </h1>
+            <Link href={"/"} className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                PicShareX
+            </Link>
         </div>
         <div>
         <button 

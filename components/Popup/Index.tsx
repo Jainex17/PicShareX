@@ -12,10 +12,17 @@ interface PopupProps {
 export const Popup = ({ setPopupVal, uploadbtn, setsecretcodeval, secretcodeval }: PopupProps) => {
   
   useEffect(() => {
-    setsecretcodeval(
-      Math.random().toString(36).substring(0, 25) +
-        Math.random().toString(36).substring(0, 25)
-    );
+    function generateUniqueCode() {
+      const array = new Uint8Array(30);
+      window.crypto.getRandomValues(array);
+      const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let code = '';
+      for (let i = 0; i < array.length; i++) {
+          code += charset[array[i] % charset.length];
+      }
+      return code;
+  }
+    setsecretcodeval(generateUniqueCode());
   }, []);
 
   function copytext() {

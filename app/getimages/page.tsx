@@ -1,34 +1,33 @@
 "use client";
 
 import React from "react";
-import { storage } from "@/firebase";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { fetchImages } from "@/utils/fetchImages";
+const FileSaver = require('file-saver');
+
+interface Image {
+  fileName: string;
+  url: string;
+}
 
 export default function Page() {
   const [secretcode, setSecretCode] = React.useState("");
-  const [images, setImages] = React.useState<[string, string][]>([]);
+  const [images, setImages] = React.useState<Image[]>([]);
 
-  function getimages() {
-    const storageRef = ref(storage, secretcode);
-
-    listAll(storageRef).then((res) => {
-      res.items.forEach((itemRef) => {
-        const fileName = itemRef.fullPath.split("/")[1];
-
-        getDownloadURL(itemRef).then((url) => {
-          setImages((prevImages) => [...prevImages, [fileName, url]]);
-        });
-      });
-    });
+  async function getimages() {
+    setImages([]);
+    const imageurls = await fetchImages(secretcode);
+    setImages(imageurls.map(([fileName, url]) => ({ fileName, url })));
   }
 
-  function downloadImage(url: string) {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = url.split("/").pop() || "image";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  function downloadImage(url: string, fileName: string) {
+    FileSaver.saveAs(url, fileName);
+    // const link = document.createElement("a");
+    // link.href = url;
+    
+    // link.download = url.split("/").pop() || "image";
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
   }
 
   return (
@@ -46,6 +45,7 @@ export default function Page() {
           <button
             className="w-20 px-3 font-semibold dark:bg-[#292218] border border-gray-900 dark:border-[#b47517] dark:hover:bg-[#492218] rounded-sm"
             onClick={getimages}
+            disabled= {secretcode.length < 7}
           >
             Get
           </button>
@@ -54,33 +54,38 @@ export default function Page() {
 
       <div className="my-10">
         <div className="flex gap-6 justify-center flex-wrap">
+          {images.length === 0 && (
+            <h3 className="text-gray-600 dark:text-white text-2xl font-semibold py-2 px-3">
+              No images found
+              </h3>
+              )}
+
           {images.map((image, index) => (
-            <>
+            <div key={index}>
               <div
-                key={index}
                 className="flex flex-col border border-[#b47517] rounded-md select-none"
               >
                 <img
-                  src={image[1]}
+                  src={image.url}
                   alt="preview image"
                   draggable={false}
                   className="hover:brightness-75 transition  flex justify-center items-center object-cover w-64 h-64"
                 />
                 <div className="flex justify-between bg-white dark:bg-[#333]">
                   <p className="text-gray-600 dark:text-white text-xs py-2 px-3">
-                    {image[0] && image[0].length > 30
-                      ? image[0].slice(0, 30) + "..."
-                      : image[0]}
+                    {image.fileName && image.fileName.length > 30
+                      ? image.fileName.slice(0, 30) + "..."
+                      : image.fileName}
                   </p>
                 </div>
               </div>
               <button
-                onClick={() => downloadImage(image[1])}
-                className="mt-2 p-2 bg-blue-500 text-white rounded-md"
+                onClick={() => downloadImage(image.url, image.fileName)}
+                className="mt-2 p-2 dark:bg-gray-700 dark:text-gray-300 bg-gray-100 text-gray-900 rounded-md w-full"
               >
                 Download
               </button>
-            </>
+            </div>
           ))}
         </div>
       </div>

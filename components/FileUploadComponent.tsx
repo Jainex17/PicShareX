@@ -2,16 +2,10 @@ import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import { Popup } from "./Popup/Index";
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  listAll,
-} from "firebase/storage";
+import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
 
 function FileUploadComponent() {
-
   const [images, setImages] = useState<File[]>([]);
   const [isUpload, setIsUpload] = useState<boolean>(false);
   const [PopupVal, setPopupVal] = useState<boolean>(false);
@@ -45,14 +39,18 @@ function FileUploadComponent() {
 
   function uploadbtn() {
     setIsUpload(true);
-    console.log("uploading");
-    toast("Uploading...");
+    try {
+      toast("Uploading...");
 
-    for (let i = 0; i < images.length; i++) {
+      for (let i = 0; i < images.length; i++) {
         const storageRef = ref(storage, `${secretcodeval}/${images[i].name}`);
         uploadBytesResumable(storageRef, images[i]);
+      }
+      toast.success("Images uploaded successfully");
+    } catch (error) {
+      toast.error("Error while uploading images");
     }
-    
+
     setIsUpload(false);
     setImages([]);
     setPopupVal(false);
@@ -60,7 +58,14 @@ function FileUploadComponent() {
 
   return (
     <>
-      {PopupVal && <Popup uploadbtn={uploadbtn} setPopupVal={setPopupVal} secretcodeval={secretcodeval} setsecretcodeval={setsecretcodeval} />}
+      {PopupVal && (
+        <Popup
+          uploadbtn={uploadbtn}
+          setPopupVal={setPopupVal}
+          secretcodeval={secretcodeval}
+          setsecretcodeval={setsecretcodeval}
+        />
+      )}
       <section className="fileupload container mx-auto pt-8 px-8 bg-white dark:bg-[#2a2a2f]">
         <div
           {...getRootProps({
