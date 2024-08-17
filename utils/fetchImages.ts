@@ -1,5 +1,5 @@
 import { storage } from "@/firebase";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, listAll, ref } from "firebase/storage";
 
 
 export async function fetchImages(secretcode: string) {
@@ -13,4 +13,18 @@ export async function fetchImages(secretcode: string) {
   });
 
   return Promise.all(urlPromises);
+}
+
+export async function deleteImageWithUrl(url: string, filename: string) {
+  const codeurl = url.split("/")[7];
+  const secretcode = codeurl.split("%")[0];
+  
+  const storageRef = ref(storage, `${secretcode}/${filename}`);
+
+  try {
+    await deleteObject(storageRef);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }

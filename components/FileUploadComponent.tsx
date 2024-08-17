@@ -13,24 +13,32 @@ function FileUploadComponent() {
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (
-        acceptedFiles[0].type !== "image/jpeg" &&
-        acceptedFiles[0].type !== "image/png" &&
-        acceptedFiles[0].type !== "image/jpg"
-      ) {
-        toast.error("Only jpeg, jpg and png files are allowed");
-        return;
-      }
-      if (acceptedFiles[0].size > 1000000) {
-        toast.error("File size should be less than 1MB");
-        return;
-      }
+      
       if (images.length + acceptedFiles.length > 10) {
         toast.error("You can't upload more than 10 images");
         return;
       }
 
+      for (let i = 0; i < acceptedFiles.length; i++) {
+        
+        if(acceptedFiles[i].type !== "image/jpeg" && acceptedFiles[i].type !== "image/png" && acceptedFiles[i].type !== "image/jpg"){
+          toast.error("Only jpeg, jpg and png files are allowed");
+          return;
+        }
+
+        if(acceptedFiles[i].size > 3000000){
+          toast.error("File size should be less than 3MB");
+          return;
+        }
+
+        if (images.some((image) => image.name === acceptedFiles[i].name)) {
+          toast.error("Image already exists");
+          return;
+        }
+      }
+      
       setImages([...images, ...acceptedFiles]);
+
     },
     [images]
   );
@@ -54,6 +62,10 @@ function FileUploadComponent() {
     setIsUpload(false);
     setImages([]);
     setPopupVal(false);
+  }
+
+  function deleteFromUpload(name: string) {
+    setImages(images.filter((image) => image.name !== name));
   }
 
   return (
@@ -136,7 +148,7 @@ function FileUploadComponent() {
                 {images.map((image, index) => (
                   <div
                     key={index}
-                    className="flex flex-col border border-[#b47517] rounded-md select-none"
+                    className="flex flex-col border border-[#b47517] rounded-md select-none relative"
                   >
                     <img
                       src={URL.createObjectURL(image)}
@@ -144,7 +156,9 @@ function FileUploadComponent() {
                       draggable={false}
                       className="hover:brightness-75 transition  flex justify-center items-center object-cover w-64 h-64"
                     />
-
+                      <div className="absolute right-2 top-1 rounded-sm cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" onClick={()=> deleteFromUpload(image.name)} className="w-5 dark:bg-gray-800 bg-gray-200 p-1 mt-1"><path fill="currentColor" d="M18.36 19.78L12 13.41l-6.36 6.37l-1.42-1.42L10.59 12L4.22 5.64l1.42-1.42L12 10.59l6.36-6.36l1.41 1.41L13.41 12l6.36 6.36z"></path></svg>
+                </div>
                     <div className="flex justify-between bg-white dark:bg-[#333]">
                       <p className="text-gray-600 dark:text-white text-xs py-2 px-3">
                         {image.name && image.name.length > 22
