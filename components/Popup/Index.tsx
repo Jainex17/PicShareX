@@ -30,6 +30,12 @@ export const Popup = ({ setPopupVal, uploadbtn, setsecretcodeval, secretcodeval 
     toast.success("Copied to clipboard");
   }
 
+  function copylink() {
+    const code = window.location.origin + "/getimages/" + secretcodeval;
+    navigator.clipboard.writeText(code);
+    toast.success("Copied " + code);
+  }
+
   return (
     <>
       <OverLay setPopupVal={setPopupVal} />
@@ -79,12 +85,12 @@ export const Popup = ({ setPopupVal, uploadbtn, setsecretcodeval, secretcodeval 
           </div>
           <span className="text-xs text-red-300">*You can only get images with this code, so make sure you copy it.</span>
         </div>
-        <div className="flex justify-end items-center pb-4 pt-2 ">
+        <div className="flex justify-end items-center pb-4 pt-1">
           <button
-            className="dark:hover:bg-[#E6A23c] dark:hover:text-white dark:bg-[#292218] border border-gray-900 dark:border-[#b47517] dark:text-[#e6a23c] px-8 py-2 rounded-md transition ease-in-out"
-            onClick={() => setPopupVal(false)}
+            className="dark:hover:bg-[#E6A23c] dark:hover:text-white dark:bg-[#292218] border border-gray-900 dark:border-[#b47517] dark:text-[#e6a23c] md:px-8 md:py-2 px-2 py-1 rounded-md transition ease-in-out"
+            onClick={copylink}
           >
-            Cancel
+            Copy Share Link
           </button>
           <button className=" dark:hover:bg-[#409eff] dark:hover:text-white dark:bg-[#18222c] dark:text-[#409eff] border dark:border-[#409eff] border-gray-900 px-8 py-2 mx-5 rounded-md  transition ease-in-out"
             onClick={uploadbtn}
